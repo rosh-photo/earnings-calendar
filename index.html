@@ -36,7 +36,7 @@
 </head>
 <body>
 <h1>Earnings Calendar</h1>
-<p class="meta">Big Tech &middot; AI &amp; Chips &middot; Memory &middot; Updated Jul 21 2026 14:28 UTC</p>
+<p class="meta">Big Tech &middot; AI &amp; Chips &middot; Memory &middot; Updated Jul 21 2026 14:31 UTC</p>
 
 <div class="bar">
   <button class="btn on" onclick="filt('all')">All (22)</button>
@@ -48,20 +48,22 @@
   <th onclick="doSort(0)">Ticker</th>
   <th onclick="doSort(1)">Company</th>
   <th onclick="doSort(2)">Category</th>
-  <th onclick="doSort(3)">Earnings Date</th>
-  <th onclick="doSort(4)">Time</th>
-  <th onclick="doSort(5)">EPS Est.</th>
-  <th onclick="doSort(6)">Rev Est.</th>
-  <th onclick="doSort(7,'n')">In</th>
-  <th onclick="doSort(8)">Last Q</th>
-  <th onclick="doSort(9)">Beats</th>
+  <th onclick="doSort(3)">Day</th>
+  <th onclick="doSort(4,'d')">Date</th>
+  <th onclick="doSort(5)">Time</th>
+  <th onclick="doSort(6)">EPS Est.</th>
+  <th onclick="doSort(7)">Rev Est.</th>
+  <th onclick="doSort(8,'n')">In</th>
+  <th onclick="doSort(9)">Last Q</th>
+  <th onclick="doSort(10)">Beats</th>
 </tr></thead>
 <tbody>
 <tr class="mid" data-cat="Big Tech" data-days="8">
   <td><strong>AAPL</strong></td>
   <td>Apple</td>
   <td><span class="cat big-tech">Big Tech</span></td>
-  <td>Thu Jul 30</td>
+  <td>Thu</td>
+  <td data-sort="2026-07-30">Jul 30</td>
   <td>AMC</td>
   <td class="num">$1.89</td>
   <td class="num">$108.9B</td>
@@ -72,7 +74,8 @@
   <td><strong>MSFT</strong></td>
   <td>Microsoft</td>
   <td><span class="cat big-tech">Big Tech</span></td>
-  <td>Wed Jul 29</td>
+  <td>Wed</td>
+  <td data-sort="2026-07-29">Jul 29</td>
   <td>AMC</td>
   <td class="num">$4.24</td>
   <td class="num">$87.7B</td>
@@ -83,7 +86,8 @@
   <td><strong>GOOGL</strong></td>
   <td>Alphabet</td>
   <td><span class="cat big-tech">Big Tech</span></td>
-  <td>Wed Jul 22</td>
+  <td>Wed</td>
+  <td data-sort="2026-07-22">Jul 22</td>
   <td>AMC</td>
   <td class="num">$2.90</td>
   <td class="num">$116.9B</td>
@@ -94,7 +98,8 @@
   <td><strong>AMZN</strong></td>
   <td>Amazon</td>
   <td><span class="cat big-tech">Big Tech</span></td>
-  <td>Thu Jul 30</td>
+  <td>Thu</td>
+  <td data-sort="2026-07-30">Jul 30</td>
   <td>AMC</td>
   <td class="num">$1.82</td>
   <td class="num">$196.0B</td>
@@ -105,7 +110,8 @@
   <td><strong>META</strong></td>
   <td>Meta</td>
   <td><span class="cat big-tech">Big Tech</span></td>
-  <td>Wed Jul 29</td>
+  <td>Wed</td>
+  <td data-sort="2026-07-29">Jul 29</td>
   <td>AMC</td>
   <td class="num">$7.39</td>
   <td class="num">$60.3B</td>
@@ -116,7 +122,8 @@
   <td><strong>NVDA</strong></td>
   <td>NVIDIA</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Wed Aug 26</td>
+  <td>Wed</td>
+  <td data-sort="2026-08-26">Aug 26</td>
   <td>AMC</td>
   <td class="num">$2.08</td>
   <td class="num">$91.8B</td>
@@ -127,7 +134,8 @@
   <td><strong>AVGO</strong></td>
   <td>Broadcom</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Thu Sep 03</td>
+  <td>Thu</td>
+  <td data-sort="2026-09-03">Sep 03</td>
   <td>AMC</td>
   <td class="num">$3.24</td>
   <td class="num">$29.4B</td>
@@ -138,7 +146,8 @@
   <td><strong>AMD</strong></td>
   <td>AMD</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Tue Aug 04</td>
+  <td>Tue</td>
+  <td data-sort="2026-08-04">Aug 04</td>
   <td>AMC</td>
   <td class="num">$1.61</td>
   <td class="num">$11.3B</td>
@@ -149,7 +158,8 @@
   <td><strong>ARM</strong></td>
   <td>Arm Holdings</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Wed Jul 29</td>
+  <td>Wed</td>
+  <td data-sort="2026-07-29">Jul 29</td>
   <td>AMC</td>
   <td class="num">$0.40</td>
   <td class="num">$1.3B</td>
@@ -160,7 +170,8 @@
   <td><strong>TSM</strong></td>
   <td>TSMC</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Thu Oct 15</td>
+  <td>Thu</td>
+  <td data-sort="2026-10-15">Oct 15</td>
   <td>BMO</td>
   <td class="num">$4.50</td>
   <td class="num">$1.4T</td>
@@ -171,7 +182,8 @@
   <td><strong>INTC</strong></td>
   <td>Intel</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Thu Jul 23</td>
+  <td>Thu</td>
+  <td data-sort="2026-07-23">Jul 23</td>
   <td>AMC</td>
   <td class="num">$0.22</td>
   <td class="num">$14.4B</td>
@@ -182,7 +194,8 @@
   <td><strong>QCOM</strong></td>
   <td>Qualcomm</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Wed Jul 29</td>
+  <td>Wed</td>
+  <td data-sort="2026-07-29">Jul 29</td>
   <td>AMC</td>
   <td class="num">$2.23</td>
   <td class="num">$9.7B</td>
@@ -193,7 +206,8 @@
   <td><strong>MRVL</strong></td>
   <td>Marvell</td>
   <td><span class="cat ai-chips">AI & Chips</span></td>
-  <td>Thu Aug 27</td>
+  <td>Thu</td>
+  <td data-sort="2026-08-27">Aug 27</td>
   <td>AMC</td>
   <td class="num">$0.93</td>
   <td class="num">$2.7B</td>
@@ -204,7 +218,8 @@
   <td><strong>MU</strong></td>
   <td>Micron</td>
   <td><span class="cat memory">Memory</span></td>
-  <td>Wed Sep 23</td>
+  <td>Wed</td>
+  <td data-sort="2026-09-23">Sep 23</td>
   <td>AMC</td>
   <td class="num">$31.33</td>
   <td class="num">$50.8B</td>
@@ -215,7 +230,8 @@
   <td><strong>000660.KS</strong></td>
   <td>SK Hynix</td>
   <td><span class="cat memory">Memory</span></td>
-  <td>Tue Jul 28</td>
+  <td>Tue</td>
+  <td data-sort="2026-07-28">Jul 28</td>
   <td>BMO</td>
   <td class="num">$70975.38</td>
   <td class="num">$84.1T</td>
@@ -226,7 +242,8 @@
   <td><strong>WDC</strong></td>
   <td>Western Digital</td>
   <td><span class="cat memory">Memory</span></td>
-  <td>Wed Aug 05</td>
+  <td>Wed</td>
+  <td data-sort="2026-08-05">Aug 05</td>
   <td>AMC</td>
   <td class="num">$3.30</td>
   <td class="num">$3.7B</td>
@@ -237,7 +254,8 @@
   <td><strong>SNDK</strong></td>
   <td>SanDisk</td>
   <td><span class="cat memory">Memory</span></td>
-  <td>Wed Aug 05</td>
+  <td>Wed</td>
+  <td data-sort="2026-08-05">Aug 05</td>
   <td>AMC</td>
   <td class="num">$34.15</td>
   <td class="num">$8.3B</td>
@@ -248,7 +266,8 @@
   <td><strong>285A.T</strong></td>
   <td>Kioxia</td>
   <td><span class="cat memory">Memory</span></td>
-  <td>Fri Jul 31</td>
+  <td>Fri</td>
+  <td data-sort="2026-07-31">Jul 31</td>
   <td>BMO</td>
   <td class="num">$15.96</td>
   <td class="num">–</td>
@@ -259,7 +278,8 @@
   <td><strong>CRM</strong></td>
   <td>Salesforce</td>
   <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
-  <td>Wed Sep 02</td>
+  <td>Wed</td>
+  <td data-sort="2026-09-02">Sep 02</td>
   <td>AMC</td>
   <td class="num">$3.27</td>
   <td class="num">$11.3B</td>
@@ -270,7 +290,8 @@
   <td><strong>ORCL</strong></td>
   <td>Oracle</td>
   <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
-  <td>Wed Sep 09</td>
+  <td>Wed</td>
+  <td data-sort="2026-09-09">Sep 09</td>
   <td>AMC</td>
   <td class="num">$1.74</td>
   <td class="num">$19.1B</td>
@@ -281,7 +302,8 @@
   <td><strong>SNOW</strong></td>
   <td>Snowflake</td>
   <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
-  <td>Wed Aug 26</td>
+  <td>Wed</td>
+  <td data-sort="2026-08-26">Aug 26</td>
   <td>AMC</td>
   <td class="num">$0.45</td>
   <td class="num">$1.5B</td>
@@ -292,7 +314,8 @@
   <td><strong>PLTR</strong></td>
   <td>Palantir</td>
   <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
-  <td>Mon Aug 03</td>
+  <td>Mon</td>
+  <td data-sort="2026-08-03">Aug 03</td>
   <td>AMC</td>
   <td class="num">$0.35</td>
   <td class="num">$1.8B</td>
@@ -312,8 +335,13 @@ function doSort(c,type){
   const rows=[...tb.querySelectorAll('tr')];
   if(sc===c)sa=!sa;else{sc=c;sa=true}
   rows.sort((a,b)=>{
-    let av=a.cells[c].textContent.trim(),bv=b.cells[c].textContent.trim();
-    if(type==='n'||c===7){
+    let av,bv;
+    if(type==='d'){
+      av=a.cells[c].dataset.sort||'9999';bv=b.cells[c].dataset.sort||'9999';
+      return sa?av.localeCompare(bv):bv.localeCompare(av);
+    }
+    av=a.cells[c].textContent.trim();bv=b.cells[c].textContent.trim();
+    if(type==='n'){
       const an=parseFloat(av)||9999,bn=parseFloat(bv)||9999;
       return sa?an-bn:bn-an;
     }
@@ -329,7 +357,7 @@ function filt(el,cat){
     tr.style.display=(cat==='all'||tr.dataset.cat===cat)?'':'none';
   });
 }
-doSort(7,'n');
+doSort(4,'d');
 </script>
 </body>
 </html>
