@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earnings Calendar — Big Tech, AI &amp; Memory</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+       background:#0f172a;color:#e2e8f0;padding:20px 24px}
+  h1{color:#5eead4;font-size:1.4rem;margin-bottom:2px;letter-spacing:-0.02em}
+  .meta{color:#64748b;font-size:0.8rem;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;font-size:0.85rem}
+  th{background:#1e293b;color:#94a3b8;padding:8px 10px;text-align:left;
+     font-weight:600;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;
+     position:sticky;top:0;cursor:pointer;user-select:none;white-space:nowrap}
+  th:hover{color:#5eead4}
+  td{padding:7px 10px;border-bottom:1px solid #1e293b;white-space:nowrap}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:hover{background:#1e293b}
+  tr.soon td{background:rgba(250,204,21,0.08)}
+  tr.soon:hover td{background:rgba(250,204,21,0.15)}
+  .cat{padding:2px 8px;border-radius:10px;font-size:0.7rem;font-weight:500}
+  .big-tech{background:#312e81;color:#a5b4fc}
+  .ai-chips{background:#064e3b;color:#6ee7b7}
+  .memory{background:#7c2d12;color:#fdba74}
+  .ai-software-cloud{background:#1e3a5f;color:#7dd3fc}
+  .bar{margin:12px 0 8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .btn{padding:4px 12px;border:1px solid #334155;border-radius:14px;
+       background:transparent;color:#94a3b8;cursor:pointer;font-size:0.75rem;
+       transition:all 0.15s}
+  .btn:hover{border-color:#5eead4;color:#5eead4}
+  .btn.on{background:#0d9488;color:#f0fdfa;border-color:#0d9488}
+  .footer{margin-top:20px;color:#475569;font-size:0.75rem;text-align:center}
+</style>
+</head>
+<body>
+<h1>Earnings Calendar</h1>
+<p class="meta">Big Tech &middot; AI &amp; Chips &middot; Memory &middot; Updated Jul 21 2026 14:19 UTC</p>
+
+<div class="bar">
+  <button class="btn on" onclick="filt('all')">All (22)</button>
+  <button class="btn" onclick="filt(this,&apos;Big Tech&apos;)">Big Tech (5)</button><button class="btn" onclick="filt(this,&apos;AI & Chips&apos;)">AI & Chips (8)</button><button class="btn" onclick="filt(this,&apos;Memory&apos;)">Memory (5)</button><button class="btn" onclick="filt(this,&apos;AI Software & Cloud&apos;)">AI Software & Cloud (4)</button>
+</div>
+
+<table id="t">
+<thead><tr>
+  <th onclick="doSort(0)">Ticker</th>
+  <th onclick="doSort(1)">Company</th>
+  <th onclick="doSort(2)">Category</th>
+  <th onclick="doSort(3)">Earnings Date</th>
+  <th onclick="doSort(4)">Time</th>
+  <th onclick="doSort(5)">EPS Est.</th>
+  <th onclick="doSort(6)">Rev Est.</th>
+  <th onclick="doSort(7,'n')">In</th>
+  <th onclick="doSort(8)">Last Q</th>
+  <th onclick="doSort(9)">Beats</th>
+</tr></thead>
+<tbody>
+<tr class="mid" data-cat="Big Tech" data-days="8">
+  <td><strong>AAPL</strong></td>
+  <td>Apple</td>
+  <td><span class="cat big-tech">Big Tech</span></td>
+  <td>Thu Jul 30</td>
+  <td>AMC</td>
+  <td class="num">$1.89</td>
+  <td class="num">$108.9B</td>
+  <td class="num">8d</td>
+  <td><span style="color:#34d399">$2.01 ▲+3.5%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="soon" data-cat="Big Tech" data-days="7">
+  <td><strong>MSFT</strong></td>
+  <td>Microsoft</td>
+  <td><span class="cat big-tech">Big Tech</span></td>
+  <td>Wed Jul 29</td>
+  <td>AMC</td>
+  <td class="num">$4.24</td>
+  <td class="num">$87.7B</td>
+  <td class="num">7d</td>
+  <td><span style="color:#34d399">$4.27 ▲+4.9%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="soon" data-cat="Big Tech" data-days="0">
+  <td><strong>GOOGL</strong></td>
+  <td>Alphabet</td>
+  <td><span class="cat big-tech">Big Tech</span></td>
+  <td>Wed Jul 22</td>
+  <td>AMC</td>
+  <td class="num">$2.90</td>
+  <td class="num">$116.9B</td>
+  <td class="num">TODAY</td>
+  <td><span style="color:#34d399">$5.11 ▲+94.3%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="mid" data-cat="Big Tech" data-days="8">
+  <td><strong>AMZN</strong></td>
+  <td>Amazon</td>
+  <td><span class="cat big-tech">Big Tech</span></td>
+  <td>Thu Jul 30</td>
+  <td>AMC</td>
+  <td class="num">$1.82</td>
+  <td class="num">$196.0B</td>
+  <td class="num">8d</td>
+  <td><span style="color:#34d399">$2.78 ▲+69.0%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="soon" data-cat="Big Tech" data-days="7">
+  <td><strong>META</strong></td>
+  <td>Meta</td>
+  <td><span class="cat big-tech">Big Tech</span></td>
+  <td>Wed Jul 29</td>
+  <td>AMC</td>
+  <td class="num">$7.39</td>
+  <td class="num">$60.3B</td>
+  <td class="num">7d</td>
+  <td><span style="color:#34d399">$7.31 ▲+7.2%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="later" data-cat="AI & Chips" data-days="35">
+  <td><strong>NVDA</strong></td>
+  <td>NVIDIA</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Wed Aug 26</td>
+  <td>AMC</td>
+  <td class="num">$2.08</td>
+  <td class="num">$91.8B</td>
+  <td class="num">35d</td>
+  <td><span style="color:#34d399">$1.87 ▲+5.5%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="later" data-cat="AI & Chips" data-days="43">
+  <td><strong>AVGO</strong></td>
+  <td>Broadcom</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Thu Sep 03</td>
+  <td>AMC</td>
+  <td class="num">$3.24</td>
+  <td class="num">$29.4B</td>
+  <td class="num">43d</td>
+  <td><span style="color:#34d399">$2.44 ▲+1.7%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="mid" data-cat="AI & Chips" data-days="13">
+  <td><strong>AMD</strong></td>
+  <td>AMD</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Tue Aug 04</td>
+  <td>AMC</td>
+  <td class="num">$1.61</td>
+  <td class="num">$11.3B</td>
+  <td class="num">13d</td>
+  <td><span style="color:#34d399">$1.37 ▲+5.8%</span></td>
+  <td class="num">3/4</td>
+</tr><tr class="soon" data-cat="AI & Chips" data-days="7">
+  <td><strong>ARM</strong></td>
+  <td>Arm Holdings</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Wed Jul 29</td>
+  <td>AMC</td>
+  <td class="num">$0.40</td>
+  <td class="num">$1.3B</td>
+  <td class="num">7d</td>
+  <td><span style="color:#34d399">$0.60 ▲+3.6%</span></td>
+  <td class="num">3/4</td>
+</tr><tr class="later" data-cat="AI & Chips" data-days="85">
+  <td><strong>TSM</strong></td>
+  <td>TSMC</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Thu Oct 15</td>
+  <td>BMO</td>
+  <td class="num">$4.50</td>
+  <td class="num">$1.4T</td>
+  <td class="num">85d</td>
+  <td><span style="color:#34d399">$4.31 ▲+10.9%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="soon" data-cat="AI & Chips" data-days="1">
+  <td><strong>INTC</strong></td>
+  <td>Intel</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Thu Jul 23</td>
+  <td>AMC</td>
+  <td class="num">$0.22</td>
+  <td class="num">$14.4B</td>
+  <td class="num">1d</td>
+  <td><span style="color:#34d399">$0.29 ▲+2108.7%</span></td>
+  <td class="num">3/4</td>
+</tr><tr class="soon" data-cat="AI & Chips" data-days="7">
+  <td><strong>QCOM</strong></td>
+  <td>Qualcomm</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Wed Jul 29</td>
+  <td>AMC</td>
+  <td class="num">$2.23</td>
+  <td class="num">$9.7B</td>
+  <td class="num">7d</td>
+  <td><span style="color:#34d399">$2.65 ▲+3.3%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="later" data-cat="AI & Chips" data-days="36">
+  <td><strong>MRVL</strong></td>
+  <td>Marvell</td>
+  <td><span class="cat ai-chips">AI & Chips</span></td>
+  <td>Thu Aug 27</td>
+  <td>AMC</td>
+  <td class="num">$0.93</td>
+  <td class="num">$2.7B</td>
+  <td class="num">36d</td>
+  <td><span style="color:#34d399">$0.80 ▲+0.6%</span></td>
+  <td class="num">3/4</td>
+</tr><tr class="later" data-cat="Memory" data-days="63">
+  <td><strong>MU</strong></td>
+  <td>Micron</td>
+  <td><span class="cat memory">Memory</span></td>
+  <td>Wed Sep 23</td>
+  <td>AMC</td>
+  <td class="num">$31.33</td>
+  <td class="num">$50.8B</td>
+  <td class="num">63d</td>
+  <td><span style="color:#34d399">$25.11 ▲+21.2%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="soon" data-cat="Memory" data-days="6">
+  <td><strong>000660.KS</strong></td>
+  <td>SK Hynix</td>
+  <td><span class="cat memory">Memory</span></td>
+  <td>Tue Jul 28</td>
+  <td>BMO</td>
+  <td class="num">$70975.38</td>
+  <td class="num">$84.1T</td>
+  <td class="num">6d</td>
+  <td><span style="color:#34d399">$56670.00 ▲+41.6%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="mid" data-cat="Memory" data-days="14">
+  <td><strong>WDC</strong></td>
+  <td>Western Digital</td>
+  <td><span class="cat memory">Memory</span></td>
+  <td>Wed Aug 05</td>
+  <td>AMC</td>
+  <td class="num">$3.30</td>
+  <td class="num">$3.7B</td>
+  <td class="num">14d</td>
+  <td><span style="color:#34d399">$2.72 ▲+13.6%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="mid" data-cat="Memory" data-days="14">
+  <td><strong>SNDK</strong></td>
+  <td>SanDisk</td>
+  <td><span class="cat memory">Memory</span></td>
+  <td>Wed Aug 05</td>
+  <td>AMC</td>
+  <td class="num">$34.15</td>
+  <td class="num">$8.3B</td>
+  <td class="num">14d</td>
+  <td><span style="color:#34d399">$23.41 ▲+59.7%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="mid" data-cat="Memory" data-days="9">
+  <td><strong>285A.T</strong></td>
+  <td>Kioxia</td>
+  <td><span class="cat memory">Memory</span></td>
+  <td>Fri Jul 31</td>
+  <td>BMO</td>
+  <td class="num">$15.96</td>
+  <td class="num">–</td>
+  <td class="num">9d</td>
+  <td><span style="color:#34d399">$752.40 ▲+10.1%</span></td>
+  <td class="num">2/4</td>
+</tr><tr class="later" data-cat="AI Software & Cloud" data-days="42">
+  <td><strong>CRM</strong></td>
+  <td>Salesforce</td>
+  <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
+  <td>Wed Sep 02</td>
+  <td>AMC</td>
+  <td class="num">$3.27</td>
+  <td class="num">$11.3B</td>
+  <td class="num">42d</td>
+  <td><span style="color:#34d399">$3.88 ▲+24.1%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="later" data-cat="AI Software & Cloud" data-days="49">
+  <td><strong>ORCL</strong></td>
+  <td>Oracle</td>
+  <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
+  <td>Wed Sep 09</td>
+  <td>AMC</td>
+  <td class="num">$1.74</td>
+  <td class="num">$19.1B</td>
+  <td class="num">49d</td>
+  <td><span style="color:#34d399">$2.11 ▲+7.5%</span></td>
+  <td class="num">3/4</td>
+</tr><tr class="later" data-cat="AI Software & Cloud" data-days="35">
+  <td><strong>SNOW</strong></td>
+  <td>Snowflake</td>
+  <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
+  <td>Wed Aug 26</td>
+  <td>AMC</td>
+  <td class="num">$0.45</td>
+  <td class="num">$1.5B</td>
+  <td class="num">35d</td>
+  <td><span style="color:#34d399">$0.39 ▲+21.9%</span></td>
+  <td class="num">4/4</td>
+</tr><tr class="mid" data-cat="AI Software & Cloud" data-days="12">
+  <td><strong>PLTR</strong></td>
+  <td>Palantir</td>
+  <td><span class="cat ai-software-cloud">AI Software & Cloud</span></td>
+  <td>Mon Aug 03</td>
+  <td>AMC</td>
+  <td class="num">$0.35</td>
+  <td class="num">$1.8B</td>
+  <td class="num">12d</td>
+  <td><span style="color:#34d399">$0.33 ▲+18.1%</span></td>
+  <td class="num">4/4</td>
+</tr>
+</tbody>
+</table>
+
+<p class="footer">Data: Yahoo Finance via yfinance &middot; Estimates are consensus</p>
+
+<script>
+let sc=-1,sa=true;
+function doSort(c,type){
+  const tb=document.querySelector('#t tbody');
+  const rows=[...tb.querySelectorAll('tr')];
+  if(sc===c)sa=!sa;else{sc=c;sa=true}
+  rows.sort((a,b)=>{
+    let av=a.cells[c].textContent.trim(),bv=b.cells[c].textContent.trim();
+    if(type==='n'||c===7){
+      const an=parseFloat(av)||9999,bn=parseFloat(bv)||9999;
+      return sa?an-bn:bn-an;
+    }
+    return sa?av.localeCompare(bv):bv.localeCompare(av);
+  });
+  rows.forEach(r=>tb.appendChild(r));
+}
+function filt(el,cat){
+  if(!cat)cat='all';
+  document.querySelectorAll('.btn').forEach(b=>b.classList.remove('on'));
+  (el||event.target).classList.add('on');
+  document.querySelectorAll('#t tbody tr').forEach(tr=>{
+    tr.style.display=(cat==='all'||tr.dataset.cat===cat)?'':'none';
+  });
+}
+doSort(7,'n');
+</script>
+</body>
+</html>
