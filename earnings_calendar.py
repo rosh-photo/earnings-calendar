@@ -99,9 +99,15 @@ def fetch_earnings(symbols: list[str]) -> list[dict]:
             if ed is not None and not ed.empty:
                 for dt_idx, row in ed.iterrows():
                     dt = dt_idx.to_pydatetime()
+                    # BMO/AMC only meaningful for US-listed stocks;
+                    # non-US stocks report during their local market hours
+                    if currency == "USD":
+                        timing = "AMC" if dt.hour >= 16 else "BMO" if dt.hour < 12 else "TBD"
+                    else:
+                        timing = ""
                     entry = {
                         "date": dt.strftime("%Y-%m-%d"),
-                        "time": "AMC" if dt.hour >= 16 else "BMO" if dt.hour < 12 else "TBD",
+                        "time": timing,
                         "eps_estimate": _safe_float(row.get("EPS Estimate")),
                         "eps_reported": _safe_float(row.get("Reported EPS")),
                         "surprise_pct": _safe_float(row.get("Surprise(%)")),
