@@ -92,8 +92,10 @@ def fetch_earnings(symbols: list[str]) -> list[dict]:
             # financial reporting currency (e.g. TWD for TSMC) — revenue/EPS
             # estimates from yfinance are denominated in this currency
             try:
-                fin_currency = t.info.get("financialCurrency") or currency
+                info = t.info or {}
+                fin_currency = info.get("financialCurrency") or currency
             except Exception:
+                info = {}
                 fin_currency = currency
 
             # Calendar gives next earnings date + consensus estimates
@@ -137,6 +139,27 @@ def fetch_earnings(symbols: list[str]) -> list[dict]:
                 upcoming[0]["eps_range"] = (
                     f"{eps_lo:.2f}–{eps_hi:.2f}" if eps_lo and eps_hi else None
                 )
+
+            # Correct the next earnings date using earningsCallTimestampStart
+            # from t.info — more accurate than earnings_dates index, especially
+            # for non-US stocks where the call date != release filing date.
+            # Only apply if the timestamp is in the future (t.info may cache
+            # the LAST call timestamp for stocks that already reported).
+            if upcoming:
+                call_ts = info.get("earningsCallTimestampStart") \
+                       or info.get("earningsTimestamp")
+                if call_ts:
+                    corrected = datetime.fromtimestamp(
+                        call_ts, tz=timezone.utc
+                    ).astimezone(local_tz)
+                    if corrected > now.astimezone(local_tz):
+                        upcoming[0]["date"] = corrected.strftime("%Y-%m-%d")
+                        if is_us:
+                            h = corrected.hour
+                            upcoming[0]["time"] = (
+                                "AMC" if h >= 16 else "BMO" if h < 12
+                                else "TBD"
+                            )
 
             results.append({
                 "symbol": sym,
