@@ -287,71 +287,87 @@ def write_html(results: list[dict], path: Path) -> None:
     now = datetime.now(timezone.utc)
     today_et = (now - timedelta(hours=4)).date()  # rough ET offset
 
-    # Build one row per stock: upcoming date + actuals
+    # Build one row per stock within a ±30-day window.
+    # Stocks that already reported show the REPORTED date + actuals.
+    # Stocks yet to report show the upcoming date + estimates.
     rows_html = []
     for r in results:
         sym = r["symbol"]
         name = r["name"]
         cat = r["category"]
-
-        # Next earnings
-        upcoming = r.get("upcoming", [])
-        if upcoming:
-            u = upcoming[0]
-            dt = datetime.fromisoformat(u["date"])
-            days_away = (dt.date() - today_et).days
-            date_str = dt.strftime("%a %b %d")
-            timing = u.get("time", "TBD")
-            eps = u.get("eps_consensus") or u.get("eps_estimate")
-            eps_range = u.get("eps_range", "")
-            rev = u.get("rev_consensus")
-            days_cell = "TODAY" if days_away <= 0 else f"{days_away}d"
-            badge = "soon" if days_away <= 7 else "mid" if days_away <= 30 else "later"
-        else:
-            date_str = "TBD"
-            timing = ""
-            eps = None
-            eps_range = ""
-            rev = None
-            days_cell = "\u2013"
-            days_away = 999
-            badge = "later"
-
-        # This cycle actuals (reported within 45 days)
         recent = r.get("recent", [])
-        actual_cell = "\u2013"
-        surprise_cell = "\u2013"
-        if recent:
-            q = recent[0]
-            report_dt = datetime.fromisoformat(q["date"])
-            if (today_et - report_dt.date()).days <= 45:
-                eps_r = q.get("eps_reported")
-                surp = q.get("surprise_pct")
-                c = _cur(r.get("currency", "USD"))
-                if eps_r is not None:
-                    actual_cell = f"{c}{eps_r:,.2f}"
-                if surp is not None:
-                    color = "#34d399" if surp > 0 else "#f87171"
-                    arrow = "\u25b2" if surp > 0 else "\u25bc"
-                    sign = "+" if surp > 0 else ""
-                    actual_cell = f'<span style="color:{color}">{actual_cell}</span>'
-                    surprise_cell = f'<span style="color:{color}">{arrow} {sign}{surp:.1f}%</span>'
-            beats = sum(1 for q2 in recent if q2.get("surprise_pct") and q2["surprise_pct"] > 0)
-            streak = f"{beats}/{len(recent)}"
-        else:
-            streak = "\u2013"
-
+        upcoming = r.get("upcoming", [])
         cat_cls = cat.lower().replace(" & ", "-").replace(" ", "-")
         fin_cur = _cur(r.get("fin_currency", r.get("currency", "USD")))
         cur = _cur(r.get("currency", "USD"))
-        if upcoming:
+
+        beats = sum(1 for q2 in recent if q2.get("surprise_pct") and q2["surprise_pct"] > 0)
+        streak = f"{beats}/{len(recent)}" if recent else "\u2013"
+
+        # Check if reported this cycle (within 30 days)
+        reported_this_cycle = False
+        if recent:
+            q = recent[0]
+            report_dt = datetime.fromisoformat(q["date"])
+            days_since = (today_et - report_dt.date()).days
+            if 0 <= days_since <= 30 and q.get("eps_reported") is not None:
+                reported_this_cycle = True
+
+        if reported_this_cycle:
+            # --- REPORTED: show the completed quarter ---
+            q = recent[0]
+            dt = datetime.fromisoformat(q["date"])
             day_str = dt.strftime("%a")
             mdate_str = dt.strftime("%b %d")
             iso_date = dt.strftime("%Y-%m-%d")
+            timing = q.get("time", "")
+            days_away = -days_since  # negative = past
+            # Estimate for the reported quarter (from earnings_dates, trading cur)
+            eps_est = q.get("eps_estimate")
+            eps_cell = f"{cur}{eps_est:,.2f}" if eps_est else "\u2013"
+            # Actual
+            eps_r = q.get("eps_reported")
+            surp = q.get("surprise_pct")
+            actual_cell = f"{cur}{eps_r:,.2f}" if eps_r is not None else "\u2013"
+            surprise_cell = "\u2013"
+            if surp is not None:
+                color = "#34d399" if surp > 0 else "#f87171"
+                arrow = "\u25b2" if surp > 0 else "\u25bc"
+                sign = "+" if surp > 0 else ""
+                actual_cell = f'<span style="color:{color}">{actual_cell}</span>'
+                surprise_cell = f'<span style="color:{color}">{arrow} {sign}{surp:.1f}%</span>'
+            rev_cell = "\u2013"
+            days_cell = "\u2713"
+            badge = "reported"
         else:
-            day_str = "\u2013"
-            mdate_str = "TBD"
-            iso_date = "9999-99-99"
+            # --- UPCOMING: show next earnings date + estimates ---
+            actual_cell = "\u2013"
+            surprise_cell = "\u2013"
+            if upcoming:
+                u = upcoming[0]
+                dt = datetime.fromisoformat(u["date"])
+                days_away = (dt.date() - today_et).days
+                day_str = dt.strftime("%a")
+                mdate_str = dt.strftime("%b %d")
+                iso_date = dt.strftime("%Y-%m-%d")
+                timing = u.get("time", "TBD")
+                eps_est = u.get("eps_consensus") or u.get("eps_estimate")
+                eps_cell = f"{fin_cur}{eps_est:,.2f}" if eps_est else "\u2013"
+                rev = u.get("rev_consensus")
+                rev_cell = _fmt_rev(rev, fin_cur)
+                days_cell = "TODAY" if days_away <= 0 else f"{days_away}d"
+                badge = "soon" if days_away <= 7 else "mid" if days_away <= 30 else "later"
+            else:
+                day_str = "\u2013"
+                mdate_str = "TBD"
+                iso_date = "9999-99-99"
+                timing = ""
+                eps_cell = "\u2013"
+                rev_cell = "\u2013"
+                days_cell = "\u2013"
+                days_away = 999
+                badge = "later"
+
         rows_html.append(f"""<tr class="{badge}" data-cat="{cat}" data-days="{days_away}">
   <td><strong>{sym}</strong></td>
   <td>{name}</td>
@@ -359,10 +375,10 @@ def write_html(results: list[dict], path: Path) -> None:
   <td>{day_str}</td>
   <td data-sort="{iso_date}">{mdate_str}</td>
   <td>{timing}</td>
-  <td class="num">{fin_cur+f'{eps:,.2f}' if eps else '\u2013'}</td>
+  <td class="num">{eps_cell}</td>
   <td class="num">{actual_cell}</td>
   <td class="num">{surprise_cell}</td>
-  <td class="num">{_fmt_rev(rev, fin_cur)}</td>
+  <td class="num">{rev_cell}</td>
   <td class="num">{days_cell}</td>
   <td class="num">{streak}</td>
 </tr>""")
@@ -392,6 +408,8 @@ def write_html(results: list[dict], path: Path) -> None:
   tr:hover{{background:#1e293b}}
   tr.soon td{{background:rgba(250,204,21,0.08)}}
   tr.soon:hover td{{background:rgba(250,204,21,0.15)}}
+  tr.reported td{{background:rgba(52,211,153,0.06)}}
+  tr.reported:hover td{{background:rgba(52,211,153,0.12)}}
   .cat{{padding:2px 8px;border-radius:10px;font-size:0.7rem;font-weight:500}}
   .big-tech{{background:#312e81;color:#a5b4fc}}
   .ai-chips{{background:#064e3b;color:#6ee7b7}}
