@@ -58,6 +58,16 @@ for _cat, _tickers in WATCHLIST.items():
 ALL_SYMBOLS = list(_SYMBOL_META.keys())
 
 
+def _exchange_tz(symbol: str) -> timezone:
+    """Return the local timezone for a stock's exchange."""
+    _OFFSETS = {".KS": 9, ".KQ": 9, ".T": 9, ".HK": 8, ".SS": 8,
+                ".SZ": 8, ".L": 1, ".PA": 2, ".DE": 2}
+    for suffix, hrs in _OFFSETS.items():
+        if symbol.upper().endswith(suffix):
+            return timezone(timedelta(hours=hrs))
+    return timezone(timedelta(hours=-4))  # US Eastern (approx EDT)
+
+
 def fetch_earnings(symbols: list[str]) -> list[dict]:
     """Fetch earnings calendar + recent results for all symbols."""
     try:
@@ -73,6 +83,8 @@ def fetch_earnings(symbols: list[str]) -> list[dict]:
         name, category = _SYMBOL_META[sym]
         try:
             t = yf.Ticker(sym)
+            local_tz = _exchange_tz(sym)
+            is_us = (local_tz.utcoffset(None) == timedelta(hours=-4))
 
             # Currency for this ticker
             # trading currency (e.g. USD for TSM on NYSE)
@@ -99,14 +111,15 @@ def fetch_earnings(symbols: list[str]) -> list[dict]:
             if ed is not None and not ed.empty:
                 for dt_idx, row in ed.iterrows():
                     dt = dt_idx.to_pydatetime()
-                    # BMO/AMC only meaningful for US-listed stocks;
-                    # non-US stocks report during their local market hours
-                    if currency == "USD":
-                        timing = "AMC" if dt.hour >= 16 else "BMO" if dt.hour < 12 else "TBD"
+                    # Convert to local exchange timezone for date display
+                    dt_local = dt.astimezone(local_tz)
+                    # BMO/AMC only meaningful for US-listed stocks
+                    if is_us:
+                        timing = "AMC" if dt_local.hour >= 16 else "BMO" if dt_local.hour < 12 else "TBD"
                     else:
                         timing = ""
                     entry = {
-                        "date": dt.strftime("%Y-%m-%d"),
+                        "date": dt_local.strftime("%Y-%m-%d"),
                         "time": timing,
                         "eps_estimate": _safe_float(row.get("EPS Estimate")),
                         "eps_reported": _safe_float(row.get("Reported EPS")),
